@@ -1,9 +1,7 @@
-//////////////////////////////////////////////////////////////////////////////////////////
-//    ENGR_850 Term Project
-//    File        : Assertion.sv
-//    Authors     : Arok Lijo J , Chandan Gireesha , Saifulla 
-//    Description : Assertion Module 
-//////////////////////////////////////////////////////////////////////////////////////////
+//  File        : Assertion.sv
+
+`timescale 1ns/1ps
+
 
 module ME_assertions(input clock, input start, input [7:0] BestDist, input [3:0] motionX, input [3:0] motionY, input completed);
 
