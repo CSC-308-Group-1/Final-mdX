@@ -23,7 +23,7 @@ class scoreboard;
     partial = 0;
     perfect = 0;
     nomatch = 0;
-    $display("================================================= [SCOREBOARD_INFO] :: Main Task Starts =================================================     
+    $display("================================================= [SCOREBOARD_INFO] :: Main Task Starts =================================================");
     forever begin
       mon2scb.get(trans); // Get transaction from monitor
       $display("[SCOREBOARD_INFO] :: Expected_motionX : %d, Expected_motionY : %d", trans.Expected_motionX, trans.Expected_motionY);
