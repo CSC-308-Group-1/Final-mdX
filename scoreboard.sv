@@ -1,3 +1,4 @@
+
 `timescale 1ns/1ps
 
 class scoreboard;
@@ -22,79 +23,71 @@ class scoreboard;
     partial = 0;
     perfect = 0;
     nomatch = 0;
-    $display("====== SCOREBOARD: Main Task Starts ======");     
+    $display("############################################ [SCOREBOARD_INFO] :: Main Task Starts #########################################");     
     forever begin
       mon2scb.get(trans); // Get transaction from monitor
+      $display("[SCOREBOARD_INFO] :: Expected_motionX : %d, Expected_motionY : %d", trans.Expected_motionX, trans.Expected_motionY);
       
       // Adjust motionX and motionY for signed values
-      motionX = (trans.motionX >= 8) ? trans.motionX - 16 : trans.motionX;
-      motionY = (trans.motionY >= 8) ? trans.motionY - 16 : trans.motionY;
+      if (trans.motionX >= 8)
+        motionX = trans.motionX - 16;
+      else
+        motionX = trans.motionX;
 
-      $display("\n==== SCOREBOARD: Transaction Details ====");
-      $display(" Expected Motion:   X = %0d, Y = %0d", trans.Expected_motionX, trans.Expected_motionY);
-      $display(" Actual Motion:     X = %0d, Y = %0d", motionX, motionY);
-      $display(" Best Distance:     %0d", trans.BestDist);
-      $display("=========================================");
+      if (trans.motionY >= 8)
+        motionY = trans.motionY - 16;
+      else
+        motionY = trans.motionY;
 
-      // Evaluate the transaction based on BestDist value
-      if (trans.BestDist == 8'hFF) begin
-        $display(" SCOREBOARD: No Match Found in the Search Window");
-        nomatch++;
-      end
-      else if (trans.BestDist == 8'h00) begin
-        $display(" SCOREBOARD: Perfect Match Found");
-        perfect++;
-      end
-      else begin
-        $display(" SCOREBOARD: Partial Match Found");
-        partial++;
-      end
+    $display("\n================================================= [SCOREBOARD_RESULTS] =================================================");
 
-      // Compare DUT motion values with expected values
-      if (motionX == trans.Expected_motionX && motionY == trans.Expected_motionY) begin
-        $display(" SCOREBOARD: Motion Matches Expected Values");
-      end
-      else begin
-        $display(" SCOREBOARD: Motion Does Not Match Expected Values");
-      end
-
-      $display("=========================================\n");  
-      no_transactions++;
-      $display(" SCOREBOARD: Total Transactions Processed: %d", no_transactions);
-      $display("=========================================\n");
-
-      // Sample cross-coverage of motion vectors
-      sample_coverage(motionX, motionY);
+  // Evaluate the transaction based on BestDist value
+  if (trans.BestDist == 8'hFF) begin
+    $display("[SCOREBOARD_INFO] :: Reference Memory Not Found in the Search Window!");
+    nomatch++;
+  end
+  else begin
+    if (trans.BestDist == 8'h00) begin
+      $display("[SCOREBOARD_INFO] :: Perfect Match Found for Reference Memory in the Search Window"); 
+      $display("[SCOREBOARD_INFO] :: BestDist = %0d, motionX = %0d, motionY = %0d, Expected_motionX = %0d, Expected_motionY = %0d", 
+                trans.BestDist, motionX, motionY, trans.Expected_motionX, trans.Expected_motionY);
+      perfect++;
     end
-  endtask
+    else begin
+      $display("[SCOREBOARD_INFO] :: Partial Match Found: BestDist = %0d, motionX = %0d, motionY = %0d, Expected_motionX = %0d, Expected_motionY = %0d", 
+                trans.BestDist, motionX, motionY, trans.Expected_motionX, trans.Expected_motionY);
+      partial++;
+    end
+  end
+
+  // Compare DUT motion values with expected values
+  if (motionX == trans.Expected_motionX && motionY == trans.Expected_motionY) begin
+    $display("[SCOREBOARD_INFO] :: Motion As Expected :: DUT motionX = %0d, DUT motionY = %0d, Expected_motionX = %0d, Expected_motionY = %0d", 
+              motionX, motionY, trans.Expected_motionX, trans.Expected_motionY);
+  end
+  else begin
+    $display("[SCOREBOARD_INFO] :: Motion Not As Expected :: DUT motionX = %0d, DUT motionY = %0d, Expected_motionX = %0d, Expected_motionY = %0d", 
+              motionX, motionY, trans.Expected_motionX, trans.Expected_motionY);
+  end
+
+$display("========================================================================================================================\n");  
+no_transactions++;
+$display("[SCOREBOARD_INFO] :: Number of Transaction Packets: %d", no_transactions);
+$display("------------------------------------------------------------------------------------------------------------------------\n");
+end
+endtask
+
 
   // Summary function: Displays a summary of the test results
   function void summary();
-    $display("=========================================");
-    $display("|           Test Results Summary        |");
-    $display("=========================================");
-    $display("| Total Packets      : %6d              |", no_transactions);
-    $display("| Perfect Matches    : %6d              |", perfect);
-    $display("| Partial Matches    : %6d              |", partial);
-    $display("| No Matches         : %6d              |", nomatch);
-    $display("=========================================");
-  endfunction
-
-  // Cross-coverage of motion vectors and match types
-  covergroup motion_coverage;
-    coverpoint motionX;
-    coverpoint motionY;
-    cross motionX, motionY;
-  endgroup
-
-  // Instantiation of the covergroup
-  motion_coverage mcg = new();
-
-  // Function to sample cross-coverage
-  function void sample_coverage(int x, int y);
-    mcg.motionX = x;
-    mcg.motionY = y;
-    mcg.sample();
+    $display("-----------------------------------------");
+    $display("| Test Results                          |");
+    $display("-----------------------------------------");
+    $display("| Total Packets          | %6d       |", no_transactions);
+    $display("| Perfect Matches        | %6d       |", perfect);
+    $display("| Partial Matches        | %6d       |", partial);
+    $display("| No Matches             | %6d       |", nomatch);
+    $display("-----------------------------------------");
   endfunction
   
 endclass
