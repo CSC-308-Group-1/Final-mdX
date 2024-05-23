@@ -9,7 +9,7 @@ SV_FILES = assertion.sv coverage.sv driver.sv environment.sv generator.sv interf
 
 # Compile target
 compile:
-	$(SIMULATOR) $(SIM_FLAGS) $(SRC_FILES) $(SV_FILES)
+	$(SIMULATOR) $(SIM_FLAGS) $(SV_FILES) $(SRC_FILES)
 
 # Run simulation target
 simulate: compile
