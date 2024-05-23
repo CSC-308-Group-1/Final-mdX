@@ -2,37 +2,35 @@
 
 class generator;
 
-  //Transaction class Handle
-  rand Transaction trans ;
+  // Transaction class handle
+  rand Transaction trans;
 
-  //Number of Transaction
-  int  trans_count;
+  // Number of transactions to generate (set to 1 for single transaction)
+  int trans_count = 1;
 
-  //mailbox Handle
+  // Mailbox handle for communication with driver
   mailbox gen2driv;
 
+  // Event to signal end of generation
   event ended;
 
-  //Constructor
-  function new(mailbox gen2driv,event ended);
+  // Constructor: Initializes mailbox and event handles
+  function new(mailbox gen2driv, event ended);
     this.gen2driv = gen2driv;
-    this.ended    = ended;
-    //trans = new();
+    this.ended = ended;
   endfunction
 
-  
+  // Main task: Generates transactions and sends them to the driver
   task main();
     $display("########################### [GEN_INFO]: Generator Main Task #########################");
-    repeat(trans_count) begin
+    repeat (trans_count) begin
       trans = new();
-    if( !trans.randomize()) $fatal("[GEN_ERROR] :: Randomization failed"); //with {trans.rand_mismatch_index <256 ;}  //Randomise Transaction Class
-      trans.gen_Rmem();                                                                                               //Generate Rmem from Smem
-      //$display("[GEN_INFO]: Transaction values: x: %d and y: %d", trans.Expected_motionX, trans.Expected_motionY);
+      if (!trans.randomize()) $fatal("[GEN_ERROR] :: Randomization failed"); // Randomize Transaction class
+      trans.gen_Rmem(); // Generate Rmem from Smem
       trans.display();
-      gen2driv.put(trans);                                                                                            //Put Transaction Packet into mailbox
-
+      gen2driv.put(trans); // Put transaction packet into mailbox
     end
-    -> ended; 
+    -> ended; // Signal that generation is ended
   endtask
 
 endclass
