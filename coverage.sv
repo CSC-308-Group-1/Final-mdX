@@ -48,6 +48,8 @@ class coverage;
       bins zero_val  = {0};       // Zero value
       bins pos_val[] = {[1:7]};   // Positive values
     }
+    Cross_Exp : cross Expect_motionX,Expect_motionY;
+    Cross_Act : cross Actual_motionX,Actual_motionY;
   endgroup
   
   // Constructor to initialize the coverage class
