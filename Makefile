@@ -1,22 +1,71 @@
-# Compiler and simulator settings
-SIMULATOR = vcs
-SIM_FLAGS = -sverilog -full64
-SIM_RUN_FLAGS = -R
+# Makefile for SystemVerilog project
 
-# Source files
-SRC_FILES = top.v top_tb_direct.v top_tb.sv
-SV_FILES = assertion.sv coverage.sv defines.sv driver.sv environment.sv generator.sv interface.sv monitor.sv scoreboard.sv test.sv transaction.sv
+# Define file paths
+RTL = ./top.sv
+INTERFACE = ./interface.sv
+TRANSACTION = ./transaction.sv
+GENERATOR = ./generator.sv
+DRIVER = ./driver.sv
+MONITOR = ./monitor.sv
+SCOREBOARD = ./scoreboard.sv
+ENVIRONMENT = ./environment.sv
+TEST = ./test.sv
 
-# Compile target
+# Seed for randomization
+SEED = 1
+
+# Default target
+default: test
+
+# Test target
+test: compile run
+
+# Run simulation
+run:
+	./simv -l simv.log +ntb_random_seed=$(SEED)
+
+# Compile files
 compile:
-	$(SIMULATOR) $(SIM_FLAGS) $(SV_FILES) $(SRC_FILES)
+	vcs -l vcs.log -sverilog -debug_acc+all -debug_region+cell+encrypt -full64 $(INTERFACE) $(TRANSACTION) $(GENERATOR) $(DRIVER) $(MONITOR) $(SCOREBOARD) $(ENVIRONMENT) $(TEST) $(RTL)
 
-# Run simulation target
-simulate: compile
-	./simv $(SIM_RUN_FLAGS)
+# DVE for post-processing
+dve:
+	dve -vpd vcdplus.vpd &
 
-# Clean target
+# Debug mode
+debug:
+	./simv -l simv.log -gui -tbug +ntb_random_seed=$(SEED)
+
+# Copy solution files
+solution: clean
+	cp ../../solutions/lab1/*.sv .
+
+# Clean intermediate files
 clean:
-	rm -rf csrc simv* *.daidir
+	rm -rf simv* csrc* *.tmp *.vpd *.key *.log *hdrs.h
 
-.PHONY: compile simulate clean
+# Nuke all changes
+nuke: clean
+	rm -rf *.v* *.sv include .*.lock .*.old DVE* *.tcl *.h
+	cp .orig/* .
+
+# Help message
+help:
+	@echo ==========================================================================
+	@echo  " 								       "
+	@echo  " USAGE: make target <SEED=xxx>                                         "
+	@echo  " 								       "
+	@echo  " ------------------------- Test TARGETS ------------------------------ "
+	@echo  " test       => Compile TB and DUT files, runs the simulation.          "
+	@echo  " compile    => Compile the TB and DUT.                                 "
+	@echo  " run        => Run the simulation.                                     "
+	@echo  " dve        => Run dve in post-processing mode                         "
+	@echo  " debug      => Runs simulation interactively with dve                  "
+	@echo  " clean      => Remove all intermediate simv and log files.             "
+	@echo  "                                                                       "
+	@echo  " -------------------- ADMINISTRATIVE TARGETS ------------------------- "
+	@echo  " help       => Displays this message.                                  "
+	@echo  " solution   => Copies all files from solutions directory               "
+	@echo  " nuke       => Erase all changes. Put all files back to original state "
+	@echo  "								       "
+	@echo ==========================================================================
