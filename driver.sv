@@ -21,15 +21,15 @@ class driver;
   
   // Start task: Resets the values in memories before starting the operation
   task start;
-    $display(" ####################################### Start of driver, mem_intf.start: %b ############################################\n", mem_intf.start);
+    $display(" ================================================= Start of driver, mem_intf.start: %b =================================================\n", mem_intf.start);
     wait(!mem_intf.start);
-    $display(" ####################################### [DRIVER_INFO] Initialized to Default ###########################################\n");
+    $display(" ================================================= [DRIVER_INFO] Initialized to Default =================================================\n");
     for(j = 0; j < `SMEM_MAX; j++)
       `DRIV_IF.S_mem[j] <= 0;
     for(j = 0; j < `RMEM_MAX; j++)
       `DRIV_IF.R_mem[j] <= 0;
     wait(mem_intf.start);
-    $display(" ####################################### [DRIVER_INFO] All Memories Set ##################################################");
+    $display(" ================================================= [DRIVER_INFO] All Memories Set =================================================");
   endtask
   
   // Drive task: Drives transactions into DUT through the interface
@@ -55,7 +55,7 @@ class driver;
 
   // Main task: Starts the driver and continuously drives transactions
   task main;
-    $display("[DRIVER_INFO]   :: ############################### Driver Main Started ############################");
+    $display("[DRIVER_INFO]   :: ================================================= Driver Main Started =================================================");
     forever begin
       fork
         begin
