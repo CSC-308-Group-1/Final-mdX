@@ -62,6 +62,9 @@ class scoreboard;
       no_transactions++;
       $display("[SCOREBOARD] :: Total Transactions Processed: %d", no_transactions);
       $display("----------------------------------------------------\n");
+
+      // Sample cross-coverage of motion vectors
+      sample_coverage(motionX, motionY);
     end
   endtask
 
@@ -84,9 +87,10 @@ class scoreboard;
     cross motionX, motionY;
   endgroup
 
-  // Instantiate and sample cross-coverage
+  // Instantiation of the covergroup
   motion_coverage mcg = new();
 
+  // Function to sample cross-coverage
   function void sample_coverage(int x, int y);
     mcg.motionX = x;
     mcg.motionY = y;
