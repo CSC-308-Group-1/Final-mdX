@@ -10,7 +10,7 @@ module top_tb();
   always #10 clk = ~clk;                 // Clock Generation
   
   initial begin 
-    $display(" ###################################### TB Start = 0 #########################################\n");
+    $display(" ================================================= TB Start = 0 =================================================\n");
     mem_intf.start = 1'b0;
     repeat(2)
     @(posedge clk);   
