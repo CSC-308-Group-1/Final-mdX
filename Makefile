@@ -4,8 +4,8 @@ SIM_FLAGS = -sverilog -full64
 SIM_RUN_FLAGS = -R
 
 # Source files
-SRC_FILES = top.v top_tb_direct.v
-SV_FILES = assertion.sv coverage.sv driver.sv environment.sv generator.sv interface.sv monitor.sv scoreboard.sv test.sv transaction.sv defines.sv
+SRC_FILES = top.v top_tb_direct.v top_tb.sv
+SV_FILES = assertion.sv coverage.sv defines.sv driver.sv environment.sv generator.sv interface.sv monitor.sv scoreboard.sv test.sv transaction.sv
 
 # Compile target
 compile:
