@@ -1,15 +1,16 @@
 `timescale 1ns/1ps
 
-
 `include "environment.sv"
-program test(ME_interface mem_intf); //,ROM_R memR_u,ROM_S memS_u
-  
-  //Environment Handle
+
+program test(ME_interface mem_intf); 
+
+  // Instance of the environment class
   environment env;
   
+  // Initial block to set up and run the environment
   initial begin
-    env = new(mem_intf);      //, memR_u, memS_u
-    env.gen.trans_count = `TRANSACTION_COUNT;                                //Total Transaction count
-    env.run();                                                              //Run task to start
+    env = new(mem_intf);  // Create a new environment instance with the given interface
+    env.gen.trans_count = `TRANSACTION_COUNT;  // Set the total number of transactions to be generated
+    env.run();  // Start the run task of the environment
   end
 endprogram
