@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 
 /* Module For Top Level Hierarchy */
 module top (clock, start, BestDist, motionX, motionY, AddressR, AddressS1, AddressS2, R, S1, S2, completed);
