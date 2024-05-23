@@ -1,56 +1,34 @@
-# Makefile for SystemVerilog project
+# Makefile for SystemVerilog Lab1 #+ntb_random_seed=$(SEED) 
+RTL= ./top.v
+SVTB = ./top_tb.sv
+SEED = $random
 
-# Define file paths
-RTL = ./top.sv
-INTERFACE = ./interface.sv
-TRANSACTION = ./transaction.sv
-GENERATOR = ./generator.sv
-DRIVER = ./driver.sv
-MONITOR = ./monitor.sv
-SCOREBOARD = ./scoreboard.sv
-ENVIRONMENT = ./environment.sv
-TEST = ./test.sv
-DEFINES = ./defines.sv
+default: test 
 
-# Seed for randomization
-SEED = 1
-
-# Default target
-default: test
-
-# Test target
 test: compile run
 
-# Run simulation
 run:
-	./simv -l simv.log +ntb_random_seed=$(SEED)
+	./simv -l simv.log +ntb_random_seed_automatic
 
-# Compile files
 compile:
-	vcs -l vcs.log -sverilog -debug_acc+all -debug_region+cell+encrypt -full64 $(DEFINES) $(INTERFACE) $(TRANSACTION) $(GENERATOR) $(DRIVER) $(MONITOR) $(SCOREBOARD) $(ENVIRONMENT) $(TEST) $(RTL)
+	vcs -l vcs.log -sverilog -debug_access+all -full64 $(SVTB) $(RTL)
 
-# DVE for post-processing
 dve:
 	dve -vpd vcdplus.vpd &
 
-# Debug mode
 debug:
 	./simv -l simv.log -gui -tbug +ntb_random_seed=$(SEED)
 
-# Copy solution files
 solution: clean
 	cp ../../solutions/lab1/*.sv .
 
-# Clean intermediate files
 clean:
 	rm -rf simv* csrc* *.tmp *.vpd *.key *.log *hdrs.h
 
-# Nuke all changes
 nuke: clean
 	rm -rf *.v* *.sv include .*.lock .*.old DVE* *.tcl *.h
 	cp .orig/* .
 
-# Help message
 help:
 	@echo ==========================================================================
 	@echo  " 								       "
@@ -70,3 +48,4 @@ help:
 	@echo  " nuke       => Erase all changes. Put all files back to original state "
 	@echo  "								       "
 	@echo ==========================================================================
+
