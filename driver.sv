@@ -37,7 +37,7 @@ class driver;
     Transaction trans;
     forever begin
       gen2driv.get(trans);
-      $display(" ##################################### [DRIVER_INFO] :: Driving Transaction %0d ######################################## ", no_transactions);
+      $display(" ================================================= [DRIVER_INFO] :: Driving Transaction %0d ================================================= ", no_transactions);
       mem_intf.R_mem = trans.R_mem;  // Drive R_mem to interface
       mem_intf.S_mem = trans.S_mem;  // Drive S_mem to interface
       mem_intf.start = 1; 
