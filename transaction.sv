@@ -34,14 +34,14 @@ class Transaction;
 
   // Display function to output transaction details
   function void display();
-    $display(" ######################################## [TRANSACTION_INFO] :: SMEM Generated #######################################");
+    $display(" ================================================= [TRANSACTION_INFO] :: SMEM Generated =================================================");
     for (int j = 0; j < `SMEM_MAX; j++) begin
       if (j % 32 == 0) $display("  ");
       $write("%h  ", S_mem[j]);
       if (j == 1023) $display("  ");
     end
 
-    $display(" ######################################## [TRANSACTION_INFO] :: RMEM Generated #######################################");
+    $display(" ================================================= [TRANSACTION_INFO] :: RMEM Generated =================================================");
     for (int j = 0; j < `RMEM_MAX; j++) begin
       if (j % 16 == 0) $display("  ");
       $write("%h ", R_mem[j]);
