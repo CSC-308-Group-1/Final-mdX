@@ -25,9 +25,9 @@ class driver;
     wait(!mem_intf.start);
     $display(" ================================================= [DRIVER_INFO] Initialized to Default =================================================\n");
     for(j = 0; j < `SMEM_MAX; j++)
-      `DRIV_IF.S_mem[j] <= 0;
+      `DRIV_IF.searchMemory[j] <= 0;
     for(j = 0; j < `RMEM_MAX; j++)
-      `DRIV_IF.R_mem[j] <= 0;
+      `DRIV_IF.referenceMemory[j] <= 0;
     wait(mem_intf.start);
     $display(" ================================================= [DRIVER_INFO] All Memories Set =================================================");
   endtask
@@ -38,13 +38,13 @@ class driver;
     forever begin
       gen2driv.get(trans);
       $display(" ================================================= [DRIVER_INFO] :: Driving Transaction %0d ================================================= ", no_transactions);
-      mem_intf.R_mem = trans.R_mem;  // Drive R_mem to interface
-      mem_intf.S_mem = trans.S_mem;  // Drive S_mem to interface
+      mem_intf.referenceMemory = trans.referenceMemory;  // Drive referenceMemory to interface
+      mem_intf.searchMemory = trans.searchMemory;  // Drive searchMemory to interface
       mem_intf.start = 1; 
       @(posedge mem_intf.ME_DRIVER.clk);
-      `DRIV_IF.Expected_motionX <= trans.Expected_motionX;  // Drive Expected Motion X to interface
-      `DRIV_IF.Expected_motionY <= trans.Expected_motionY;  // Drive Expected Motion Y to interface
-      $display("[DRIVER_INFO]     :: Driver Packet Expected_motionX: %d and Expected_motionY: %d", trans.Expected_motionX, trans.Expected_motionY);       
+      `DRIV_IF.expectedXMotion <= trans.expectedXMotion;  // Drive Expected X Motion to interface
+      `DRIV_IF.expectedYMotion <= trans.expectedYMotion;  // Drive Expected Y Motion to interface
+      $display("[DRIVER_INFO]     :: Driver Packet Expected X Motion: %d and Expected Y Motion: %d", trans.expectedXMotion, trans.expectedYMotion);       
       wait(mem_intf.completed == 1);  // Wait for DUT to signal completion
       mem_intf.start = 0;
       $display("[DRIVER_INFO]     :: DUT sent completed = 1 ");
