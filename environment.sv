@@ -40,7 +40,7 @@ class environment;
   
   // Pre-test task: Initializes default values
   task pre_test();
-    $display("================================================= [ENV_INFO] Driver start ===============================================");
+    $display("&&& [DRIVER_INFO]   :: *********** Driver Initialization Started ***********");
     driv.start();  // Initialize default values
   endtask
   
@@ -60,14 +60,14 @@ class environment;
     wait(gen_ended.triggered);
     wait(gen.trans_count == driv.no_transactions);
     wait(gen.trans_count == scb.no_transactions);
-    $display ("Coverage Report = %0.2f %% \n", cov.coverageScore);  // Updated print statement
+    $display("&&& Coverage Report = %0.2f %% &&&", cov.coverageScore);  // Updated print statement
     scb.summary();  // Print summary
   endtask 
   
   // Run task: Executes the complete test sequence
   task run;
     pre_test();
-    $display("================================================= [ENV_INFO] Done with pre-test, Test Started. =================================================");
+    $display("&&& [ENV_INFO] Test Started &&&");
     test();
     post_test();
     $finish;
