@@ -41,7 +41,7 @@ interface MotionEstimationInterface(input bit clk);
   endclocking
   
   // Clocking block for monitor
-  clocking ME_monitor_cb @(posedge clk);
+  clocking Monitor_cb @(posedge clk);
     default input #1 output #1;
     input referenceMemory;
     input searchMemory;
@@ -62,6 +62,6 @@ interface MotionEstimationInterface(input bit clk);
   modport DriverInterface (clocking Driver_cb, input clk, start);
   
   // Modport for monitor
-  modport ME_MONITOR (clocking ME_monitor_cb, input clk, start);
+  modport MonitorInterface (clocking Monitor_cb, input clk, start);
 
 endinterface
