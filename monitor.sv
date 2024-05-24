@@ -27,24 +27,24 @@ class monitor;
       trans = new();
       wait(mem_intf.start == 1); // Wait for start signal from DUT
       @(posedge mem_intf.ME_MONITOR.clk);
-      trans.R_mem = mem_intf.R_mem; // Capture R memory state
-      trans.S_mem = mem_intf.S_mem; // Capture S memory state
+      trans.referenceMemory = mem_intf.referenceMemory; // Capture reference memory state
+      trans.searchMemory = mem_intf.searchMemory; // Capture search memory state
       @(posedge mem_intf.ME_MONITOR.clk);
-      trans.Expected_motionX = `MON_IF.Expected_motionX;
-      trans.Expected_motionY = `MON_IF.Expected_motionY;
+      trans.expectedXMotion = `MON_IF.expectedXMotion;
+      trans.expectedYMotion = `MON_IF.expectedYMotion;
       wait(`MON_IF.completed); // Wait for completion signal from DUT
       $display("[MONITOR_INFO]    :: COMPLETED");
-      trans.BestDist = `MON_IF.BestDist;
-      trans.motionX = `MON_IF.motionX;
-      trans.motionY = `MON_IF.motionY;
+      trans.bestDistance = `MON_IF.bestDistance;
+      trans.actualXMotion = `MON_IF.actualXMotion;
+      trans.actualYMotion = `MON_IF.actualYMotion;
 
-      // Adjust motionX and motionY for signed values
-      if (trans.motionX >= 8)
-        trans.motionX = trans.motionX - 16;
-      if (trans.motionY >= 8)
-        trans.motionY = trans.motionY - 16;
+      // Adjust actualXMotion and actualYMotion for signed values
+      if (trans.actualXMotion >= 8)
+        trans.actualXMotion = trans.actualXMotion - 16;
+      if (trans.actualYMotion >= 8)
+        trans.actualYMotion = trans.actualYMotion - 16;
         
-      $display("[MONITOR_INFO]    :: DUT OUTPUT Packet motionX: %d and motionY: %d", trans.motionX, trans.motionY);
+      $display("[MONITOR_INFO]    :: DUT OUTPUT Packet motionX: %d and motionY: %d", trans.actualXMotion, trans.actualYMotion);
 
       // Copy transaction data for coverage
       cov_trans = new trans; 
