@@ -7,39 +7,39 @@
 `include "scoreboard.sv"
 `include "coverage.sv"
 
-class environment;
+class Environment;
   // Handles for Generator, Driver, Monitor, Scoreboard, and Coverage
-  generator gen;                          
-  driver driv;
-  monitor mon;
-  scoreboard scb;
-  coverage cov;                 
+  Generator gen;                          
+  Driver driv;
+  Monitor mon;
+  Scoreboard scb;
+  CoverageAnalysis cov;                 
   
   // Mailbox handles for communication between components
-  mailbox gen2driv, mon2scb, mon2cov;      
+  mailbox genToDriver, monitorToScoreboard, monitorToCoverage;      
   
   // Events for synchronization
-  event gen_ended;
-  event mon_done;
+  event generatorDone;
+  event monitorDone;
   
   // Virtual interface handle
-  virtual ME_interface mem_intf;          
+  virtual MemoryInterface memInterface;          
 
   // Constructor: Initializes the virtual interface and component instances
-  function new(virtual ME_interface mem_intf);
-    this.mem_intf = mem_intf;   
-    gen2driv = new();
-    mon2scb = new();
-    mon2cov = new();
-    gen = new(gen2driv, gen_ended);
-    driv = new(mem_intf, gen2driv);
-    mon = new(mem_intf, mon2scb, mon2cov);
-    scb = new(mon2scb);
-    cov = new(mem_intf, mon2cov);
+  function new(virtual MemoryInterface memInterface);
+    this.memInterface = memInterface;   
+    genToDriver = new();
+    monitorToScoreboard = new();
+    monitorToCoverage = new();
+    gen = new(genToDriver, generatorDone);
+    driv = new(memInterface, genToDriver);
+    mon = new(memInterface, monitorToScoreboard, monitorToCoverage);
+    scb = new(monitorToScoreboard);
+    cov = new(memInterface, monitorToCoverage);
   endfunction
   
   // Pre-test task: Initializes default values
-  task pre_test();
+  task preTest();
     $display("================================================= [ENV_INFO] Driver start ===============================================");
     driv.start();  // Initialize default values
   endtask
@@ -51,25 +51,25 @@ class environment;
       driv.main();
       mon.main();
       scb.main();
-      cov.cove();
+      cov.trackCoverage();
     join_any
   endtask
   
   // Post-test task: Waits for completion and prints the coverage report
-  task post_test();
-    wait(gen_ended.triggered);
+  task postTest();
+    wait(generatorDone.triggered);
     wait(gen.trans_count == driv.no_transactions);
     wait(gen.trans_count == scb.no_transactions);
-    $display (" Motion Estimator Coverage Report = %0.2f %% \n", cov.ME_Coverage);  // Print coverage report
+    $display (" Coverage Report = %0.2f %% \n", cov.coverageMetric);  // Print coverage report
     scb.summary();  // Print summary
   endtask 
   
   // Run task: Executes the complete test sequence
   task run;
-    pre_test();
+    preTest();
     $display("================================================= [ENV_INFO] Done with pre-test, Test Started. =================================================");
     test();
-    post_test();
+    postTest();
     $finish;
   endtask
   
