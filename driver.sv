@@ -8,13 +8,13 @@ class driver;
   int no_transactions, j;             
 
   // Virtual interface handle
-  virtual ME_interface mem_intf;      
+  virtual MotionEstimationInterface mem_intf;      
 
   // Mailbox handle for Gen2Driver
   mailbox gen2driv;                   
   
   // Constructor: Initializes the virtual interface and mailbox
-  function new(virtual ME_interface mem_intf, mailbox gen2driv);
+  function new(virtual MotionEstimationInterface mem_intf, mailbox gen2driv);
     this.mem_intf = mem_intf; 
     this.gen2driv = gen2driv;     
   endfunction
