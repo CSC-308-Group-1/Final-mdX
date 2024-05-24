@@ -21,15 +21,15 @@ class driver;
   
   // Start task: Resets the values in memories before starting the operation
   task start;
-    $display(" ================================================= Start of driver, memoryInterface.start: %b =================================================\n", memoryInterface.start);
+    $display("**************************************** Start of driver, memoryInterface.start: %b ****************************************\n", memoryInterface.start);
     wait(!memoryInterface.start);
-    $display(" ================================================= [DRIVER_INFO] Initialized to Default =================================================\n");
+    $display(" ****************************************[DRIVER_INFO] Initialized to Default ****************************************\n");
     for(j = 0; j < `SMEM_MAX; j++)
       `DRIV_IF.searchMemory[j] <= 0;
     for(j = 0; j < `RMEM_MAX; j++)
       `DRIV_IF.referenceMemory[j] <= 0;
     wait(memoryInterface.start);
-    $display(" ================================================= [DRIVER_INFO] All Memories Set =================================================");
+    $display(" ****************************************[DRIVER_INFO] All Memories Set ****************************************");
   endtask
   
   // Drive task: Drives transactions into DUT through the interface
@@ -37,7 +37,7 @@ class driver;
     Transaction trans;
     forever begin
       gen2driv.get(trans);
-      $display(" ================================================= [DRIVER_INFO] :: Driving Transaction %0d ================================================= ", no_transactions);
+      $display(" **************************************** [DRIVER_INFO] :: Driving Transaction %0d**************************************** ", no_transactions);
       memoryInterface.referenceMemory = trans.referenceMemory;  // Drive referenceMemory to interface
       memoryInterface.searchMemory = trans.searchMemory;  // Drive searchMemory to interface
       memoryInterface.start = 1; 
@@ -55,7 +55,7 @@ class driver;
 
   // Main task: Starts the driver and continuously drives transactions
   task main;
-    $display("[DRIVER_INFO]   :: ================================================= Driver Main Started =================================================");
+    $display("[DRIVER_INFO]   :: **************************************** Driver Main Started****************************************");
     forever begin
       fork
         begin
