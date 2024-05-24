@@ -35,8 +35,8 @@ class monitor;
       wait(`MON_IF.completed); // Wait for completion signal from DUT
       $display("[MONITOR_INFO]    :: COMPLETED");
       trans.bestDistance = `MON_IF.bestDistance;
-      trans.actualXMotion = `MON_IF.actualXMotion;
-      trans.actualYMotion = `MON_IF.actualYMotion;
+      trans.actualXMotion = `MON_IF.motionX;
+      trans.actualYMotion = `MON_IF.motionY;
 
       // Adjust actualXMotion and actualYMotion for signed values
       if (trans.actualXMotion >= 8)
