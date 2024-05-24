@@ -22,7 +22,7 @@ class generator;
 
   // Main task: Generates transactions and sends them to the driver
   task main();
-    $display("================================================= [GEN_INFO]: Generator Main Task =================================================");
+    $display("**************************************** [GEN_INFO]: Generator Main Task****************************************");
     repeat (trans_count) begin
       trans = new();
       if (!trans.randomize()) $fatal("[GEN_ERROR] :: Randomization failed"); // Randomize Transaction class
