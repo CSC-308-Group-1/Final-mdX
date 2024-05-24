@@ -2,7 +2,7 @@
 
 `include "environment.sv"
 
-program test(MotionEstimationInterface memoryInterface); 
+program test(MotionEstimationInterface memoryInterface);
 
   // Instance of the environment class
   environment env;
