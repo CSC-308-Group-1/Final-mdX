@@ -20,8 +20,8 @@ module top_tb();
   ROM_R memR_u(.clock(clk), .AddressR(mem_intf.AddressR), .R(mem_intf.R));
   ROM_S memS_u(.clock(clk), .AddressS1(mem_intf.AddressS1), .AddressS2(mem_intf.AddressS2), .S1(mem_intf.S1), .S2(mem_intf.S2));
   
-  assign memR_u.Rmem = mem_intf.R_mem;
-  assign memS_u.Smem = mem_intf.S_mem;
+  assign memR_u.Rmem = mem_intf.referenceMemory;  // Updated variable name
+  assign memS_u.Smem = mem_intf.searchMemory;     // Updated variable name
 
   test Motion_Estimator(mem_intf);  // Test instantiation
 
@@ -34,7 +34,7 @@ module top_tb();
   top dut(  // DUT Instantiation
     .clock(mem_intf.clk), 
     .start(mem_intf.start), 
-    .BestDist(mem_intf.BestDist), 
+    .BestDist(mem_intf.bestDistance),  // Updated variable name
     .motionX(mem_intf.motionX), 
     .motionY(mem_intf.motionY), 
     .AddressR(mem_intf.AddressR), 
@@ -50,7 +50,7 @@ module top_tb();
   bind dut MotionEstimationAssertions assertion_instance (
     .clk(mem_intf.clk), 
     .trigger(mem_intf.start), 
-    .distance(mem_intf.BestDist), 
+    .distance(mem_intf.bestDistance),  // Updated variable name
     .vectorX(mem_intf.motionX), 
     .vectorY(mem_intf.motionY),  
     .done(mem_intf.completed)
