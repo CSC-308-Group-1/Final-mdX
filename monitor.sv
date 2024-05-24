@@ -26,10 +26,10 @@ class monitor;
       Transaction trans, cov_trans;
       trans = new();
       wait(mem_intf.start == 1); // Wait for start signal from DUT
-      @(posedge mem_intf.ME_MONITOR.clk);
+      @(posedge mem_intf.MonitorInterface.clk);
       trans.referenceMemory = mem_intf.referenceMemory; // Capture reference memory state
       trans.searchMemory = mem_intf.searchMemory; // Capture search memory state
-      @(posedge mem_intf.ME_MONITOR.clk);
+      @(posedge mem_intf.MonitorInterface.clk);
       trans.expectedXMotion = `MON_IF.expectedXMotion;
       trans.expectedYMotion = `MON_IF.expectedYMotion;
       wait(`MON_IF.completed); // Wait for completion signal from DUT
