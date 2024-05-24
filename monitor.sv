@@ -6,14 +6,14 @@ class monitor;
   int j;
 
   // Virtual interface handle
-  virtual ME_interface mem_intf;
+  virtual MotionEstimationInterface mem_intf;
   
   // Mailbox handles for communication with scoreboard and coverage
   mailbox mon2scb;
   mailbox mon2cov;
   
   // Constructor: Initializes the virtual interface and mailboxes
-  function new(virtual ME_interface mem_intf, mailbox mon2scb, mailbox mon2cov);
+  function new(virtual MotionEstimationInterface mem_intf, mailbox mon2scb, mailbox mon2cov);
     this.mem_intf = mem_intf;
     this.mon2scb = mon2scb;
     this.mon2cov = mon2cov;
