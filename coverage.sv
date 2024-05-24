@@ -1,76 +1,77 @@
 `timescale 1ns/1ps
 
-`include "transaction.sv"
-`include "generator.sv"
-`include "driver.sv"
-`include "monitor.sv"
-`include "scoreboard.sv"
-`include "coverage.sv"
+class CoverageAnalysis;
 
-class environment;
-  // Handles for Generator, Driver, Monitor, Scoreboard, and Coverage
-  generator gen;                          
-  driver driv;
-  monitor mon;
-  scoreboard scb;
-  CoverageAnalysis cov;                 
-  
-  // Mailbox handles for communication between components
-  mailbox gen2driv, mon2scb, mon2cov;      
-  
-  // Events for synchronization
-  event gen_ended;
-  event mon_done;
-  
-  // Virtual interface handle
-  virtual ME_interface mem_intf;          
+  // Metric for tracking coverage
+  real coverageScore;
 
-  // Constructor: Initializes the virtual interface and component instances
-  function new(virtual ME_interface mem_intf);
-    this.mem_intf = mem_intf;   
-    gen2driv = new();
-    mon2scb = new();
-    mon2cov = new();
-    gen = new(gen2driv, gen_ended);
-    driv = new(mem_intf, gen2driv);
-    mon = new(mem_intf, mon2scb, mon2cov);
-    scb = new(mon2scb);
-    cov = new(mem_intf, mon2cov);
+  // Virtual interface to memory
+  virtual ME_interface mem_intf;
+
+  // Mailbox for receiving transactions from the monitor
+  mailbox monitorMailbox;
+
+  // Object for transactions
+  Transaction transactionData;
+      
+  // Covergroup for measuring coverage
+  covergroup CoverageMetrics;
+    option.per_instance = 1;
+    
+    // Coverpoint for bestDistance
+    cpBestDistance: coverpoint transactionData.bestDistance;
+
+    // Coverpoint for expected X motion values
+    cpExpectedX: coverpoint transactionData.expectedMotionX {
+      bins negativeRange[] = {[-8:-1]}; // Negative values
+      bins zeroValue  = {0};             // Zero value
+      bins positiveRange[] = {[1:7]};   // Positive values
+    }
+
+    // Coverpoint for expected Y motion values
+    cpExpectedY: coverpoint transactionData.expectedMotionY {
+      bins negativeRange[] = {[-8:-1]}; // Negative values
+      bins zeroValue  = {0};             // Zero value
+      bins positiveRange[] = {[1:7]};   // Positive values
+    }
+
+    // Coverpoint for actual X motion values
+    cpActualX: coverpoint transactionData.motionX {
+      bins negativeRange[] = {[-8:-1]}; // Negative values
+      bins zeroValue  = {0};             // Zero value
+      bins positiveRange[] = {[1:7]};   // Positive values
+    }
+
+    // Coverpoint for actual Y motion values
+    cpActualY: coverpoint transactionData.motionY {
+      bins negativeRange[] = {[-8:-1]}; // Negative values
+      bins zeroValue  = {0};             // Zero value
+      bins positiveRange[] = {[1:7]};   // Positive values
+    }
+    
+    // Cross coverage for expected motion
+    crossExpected: cross cpExpectedX, cpExpectedY;
+    
+    // Cross coverage for actual motion
+    crossActual: cross cpActualX, cpActualY;
+  endgroup
+  
+  // Constructor to initialize the coverage analysis
+  function new(virtual ME_interface mem_intf, mailbox monitorMailbox);
+    this.mem_intf = mem_intf;
+    this.monitorMailbox = monitorMailbox;
+    CoverageMetrics = new();
   endfunction
-  
-  // Pre-test task: Initializes default values
-  task pre_test();
-    $display("================================================= [ENV_INFO] Driver start ===============================================");
-    driv.start();  // Initialize default values
+   
+  // Task to sample and update coverage metrics
+  task trackCoverage();
+    begin
+      forever begin
+        monitorMailbox.get(transactionData);        // Receive a transaction
+        CoverageMetrics.sample();                   // Sample the covergroup
+        coverageScore = CoverageMetrics.get_coverage(); // Update the coverage metric
+      end
+    end
   endtask
   
-  // Test task: Executes the main tasks of all components
-  task test();
-    fork
-      gen.main();
-      driv.main();
-      mon.main();
-      scb.main();
-      cov.trackCoverage();  // Updated method call
-    join_any
-  endtask
-  
-  // Post-test task: Waits for completion and prints the coverage report
-  task post_test();
-    wait(gen_ended.triggered);
-    wait(gen.trans_count == driv.no_transactions);
-    wait(gen.trans_count == scb.no_transactions);
-    $display ("Coverage Report = %0.2f %% \n", cov.coverageScore);  // Updated print statement
-    scb.summary();  // Print summary
-  endtask 
-  
-  // Run task: Executes the complete test sequence
-  task run;
-    pre_test();
-    $display("================================================= [ENV_INFO] Done with pre-test, Test Started. =================================================");
-    test();
-    post_test();
-    $finish;
-  endtask
-  
-endclass;
+endclass
