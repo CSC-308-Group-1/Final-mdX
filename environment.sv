@@ -13,7 +13,7 @@ class Environment;
   driver driv;
   monitor mon;
   scoreboard scb;
-  CoverageAnalysis cov;                 
+  coverageanalysis cov;                 
   
   // Mailbox handles for communication between components
   mailbox genToDriver, monitorToScoreboard, monitorToCoverage;      
