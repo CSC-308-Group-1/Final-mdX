@@ -21,7 +21,7 @@ class monitor;
   
   // Main monitoring task: Observes DUT activity, captures transactions, and communicates with scoreboard and coverage
   task main;
-    $display("================================================= Monitor Main Task =================================================\n");
+    $display("**************************************** Monitor Main Task ****************************************\n");
     forever begin
       Transaction trans, cov_trans;
       trans = new();
