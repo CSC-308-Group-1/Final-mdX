@@ -45,7 +45,7 @@ module top_tb();
     .S2(mem_intf.S2), 
     .completed(mem_intf.completed));
 
-  bind dut MotionEstimationAssertions (     // Binding Assertion to Top module
+  bind dut ME_assertions assertion_ME (     // Binding Assertion to Top module
       .clock(mem_intf.clk), 
       .start(mem_intf.start), 
       .BestDist(mem_intf.BestDist), 
