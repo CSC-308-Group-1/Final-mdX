@@ -26,7 +26,7 @@ class generator;
     repeat (trans_count) begin
       trans = new();
       if (!trans.randomize()) $fatal("[GEN_ERROR] :: Randomization failed"); // Randomize Transaction class
-      trans.gen_Rmem(); // Generate Rmem from Smem
+      trans.generateReferenceMemory(); // Generate referenceMemory from searchMemory
       trans.display();
       gen2driv.put(trans); // Put transaction packet into mailbox
     end
