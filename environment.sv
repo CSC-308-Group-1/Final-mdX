@@ -7,7 +7,7 @@
 `include "scoreboard.sv"
 `include "coverage.sv"
 
-class Environment;
+class environment;
   // Handles for Generator, Driver, Monitor, Scoreboard, and Coverage
   generator gen;                          
   driver driv;
