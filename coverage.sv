@@ -1,52 +1,52 @@
 `timescale 1ns/1ps
 
-class coverageanalysis;
+class CoverageAnalysis;
 
   // Metric for tracking coverage
   real coverageScore;
 
-  // Virtual interface for memory operations
-  virtual MemoryInterface memInterface;
+  // Virtual interface to memory
+  virtual ME_interface mem_intf;
 
-  // Mailbox for receiving data from the monitor
+  // Mailbox for receiving transactions from the monitor
   mailbox monitorMailbox;
 
   // Object for transactions
   Transaction transactionData;
       
-  // Covergroup for tracking different coverage metrics
+  // Covergroup for measuring coverage
   covergroup CoverageMetrics;
     option.per_instance = 1;
     
-    // Coverpoint for distance metric
+    // Coverpoint for bestDistance
     cpBestDistance: coverpoint transactionData.bestDistance;
 
     // Coverpoint for expected X motion values
     cpExpectedX: coverpoint transactionData.expectedMotionX {
-      bins negativeRange[] = {[-8:-1]};
-      bins zeroValue  = {0};
-      bins positiveRange[] = {[1:7]};
+      bins negativeRange[] = {[-8:-1]}; // Negative values
+      bins zeroValue  = {0};             // Zero value
+      bins positiveRange[] = {[1:7]};   // Positive values
     }
 
     // Coverpoint for expected Y motion values
     cpExpectedY: coverpoint transactionData.expectedMotionY {
-      bins negativeRange[] = {[-8:-1]};
-      bins zeroValue  = {0};
-      bins positiveRange[] = {[1:7]};
+      bins negativeRange[] = {[-8:-1]}; // Negative values
+      bins zeroValue  = {0};             // Zero value
+      bins positiveRange[] = {[1:7]};   // Positive values
     }
 
     // Coverpoint for actual X motion values
     cpActualX: coverpoint transactionData.motionX {
-      bins negativeRange[] = {[-8:-1]};
-      bins zeroValue  = {0};
-      bins positiveRange[] = {[1:7]};
+      bins negativeRange[] = {[-8:-1]}; // Negative values
+      bins zeroValue  = {0};             // Zero value
+      bins positiveRange[] = {[1:7]};   // Positive values
     }
 
     // Coverpoint for actual Y motion values
     cpActualY: coverpoint transactionData.motionY {
-      bins negativeRange[] = {[-8:-1]};
-      bins zeroValue  = {0};
-      bins positiveRange[] = {[1:7]};
+      bins negativeRange[] = {[-8:-1]}; // Negative values
+      bins zeroValue  = {0};             // Zero value
+      bins positiveRange[] = {[1:7]};   // Positive values
     }
     
     // Cross coverage for expected motion
@@ -57,8 +57,8 @@ class coverageanalysis;
   endgroup
   
   // Constructor to initialize the coverage analysis
-  function new(virtual MemoryInterface memInterface, mailbox monitorMailbox);
-    this.memInterface = memInterface;
+  function new(virtual ME_interface mem_intf, mailbox monitorMailbox);
+    this.mem_intf = mem_intf;
     this.monitorMailbox = monitorMailbox;
     CoverageMetrics = new();
   endfunction
