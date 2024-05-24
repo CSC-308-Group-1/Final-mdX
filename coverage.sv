@@ -18,42 +18,42 @@ class CoverageAnalysis;
   covergroup CoverageMetrics;
     option.per_instance = 1;
     
-    // Coverpoint for bestDistance
-    cpBestDistance: coverpoint transactionData.bestDistance;
+    // Coverpoint for BestDist
+    cpBestDist: coverpoint transactionData.BestDist;
 
-    // Coverpoint for expected X motion values
-    cpExpectedX: coverpoint transactionData.expectedMotionX {
+    // Coverpoint for Expected_motionX with specified bins
+    cpExpectedMotionX: coverpoint transactionData.Expected_motionX {
       bins negativeRange[] = {[-8:-1]}; // Negative values
       bins zeroValue  = {0};             // Zero value
       bins positiveRange[] = {[1:7]};   // Positive values
     }
 
-    // Coverpoint for expected Y motion values
-    cpExpectedY: coverpoint transactionData.expectedMotionY {
+    // Coverpoint for Expected_motionY with specified bins
+    cpExpectedMotionY: coverpoint transactionData.Expected_motionY {
       bins negativeRange[] = {[-8:-1]}; // Negative values
       bins zeroValue  = {0};             // Zero value
       bins positiveRange[] = {[1:7]};   // Positive values
     }
 
-    // Coverpoint for actual X motion values
-    cpActualX: coverpoint transactionData.motionX {
+    // Coverpoint for Actual_motionX with specified bins
+    cpActualMotionX: coverpoint transactionData.motionX {
       bins negativeRange[] = {[-8:-1]}; // Negative values
       bins zeroValue  = {0};             // Zero value
       bins positiveRange[] = {[1:7]};   // Positive values
     }
 
-    // Coverpoint for actual Y motion values
-    cpActualY: coverpoint transactionData.motionY {
+    // Coverpoint for Actual_motionY with specified bins
+    cpActualMotionY: coverpoint transactionData.motionY {
       bins negativeRange[] = {[-8:-1]}; // Negative values
       bins zeroValue  = {0};             // Zero value
       bins positiveRange[] = {[1:7]};   // Positive values
     }
     
     // Cross coverage for expected motion
-    crossExpected: cross cpExpectedX, cpExpectedY;
+    crossExpected: cross cpExpectedMotionX, cpExpectedMotionY;
     
     // Cross coverage for actual motion
-    crossActual: cross cpActualX, cpActualY;
+    crossActual: cross cpActualMotionX, cpActualMotionY;
   endgroup
   
   // Constructor to initialize the coverage analysis
