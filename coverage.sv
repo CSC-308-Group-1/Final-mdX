@@ -6,7 +6,7 @@ class CoverageAnalysis;
   real coverageScore;
 
   // Virtual interface to memory
-  virtual MotionEstimationInterface  mem_intf;
+  virtual MotionEstimationInterface mem_intf;
 
   // Mailbox for receiving transactions from the monitor
   mailbox monitorMailbox;
@@ -57,7 +57,7 @@ class CoverageAnalysis;
   endgroup
   
   // Constructor to initialize the coverage analysis
-  function new(virtual ME_interface mem_intf, mailbox monitorMailbox);
+  function new(virtual MotionEstimationInterface mem_intf, mailbox monitorMailbox);
     this.mem_intf = mem_intf;
     this.monitorMailbox = monitorMailbox;
     CoverageMetrics = new();
