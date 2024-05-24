@@ -11,19 +11,19 @@ module top_tb();
   
   initial begin 
     $display(" ================================================= TB Start = 0 =================================================\n");
-    mem_intf.start = 1'b0;
+    memoryInterface.start = 1'b0;
     repeat(2) @(posedge clk);
-    mem_intf.start = 1'b1;
+    memoryInterface.start = 1'b1;
   end
   
-  MotionEstimationInterface mem_intf(clk);  // Interface Instantiation
-  ROM_R memR_u(.clock(clk), .AddressR(mem_intf.AddressR), .R(mem_intf.R));
-  ROM_S memS_u(.clock(clk), .AddressS1(mem_intf.AddressS1), .AddressS2(mem_intf.AddressS2), .S1(mem_intf.S1), .S2(mem_intf.S2));
+  MotionEstimationInterface memoryInterface(clk);  // Interface Instantiation
+  ROM_R memR_u(.clock(clk), .AddressR(memoryInterface.AddressR), .R(memoryInterface.R));
+  ROM_S memS_u(.clock(clk), .AddressS1(memoryInterface.AddressS1), .AddressS2(memoryInterface.AddressS2), .S1(memoryInterface.S1), .S2(memoryInterface.S2));
   
-  assign memR_u.Rmem = mem_intf.referenceMemory;  // Updated variable name
-  assign memS_u.Smem = mem_intf.searchMemory;     // Updated variable name
+  assign memR_u.Rmem = memoryInterface.referenceMemory;  // Updated variable name
+  assign memS_u.Smem = memoryInterface.searchMemory;     // Updated variable name
 
-  test Motion_Estimator(mem_intf);  // Test instantiation
+  test Motion_Estimator(memoryInterface);  // Test instantiation
 
   initial begin
     $vcdpluson();
@@ -32,28 +32,28 @@ module top_tb();
   end
 
   top dut(  // DUT Instantiation
-    .clock(mem_intf.clk), 
-    .start(mem_intf.start), 
-    .BestDist(mem_intf.bestDistance),  // Updated variable name
-    .motionX(mem_intf.motionX), 
-    .motionY(mem_intf.motionY), 
-    .AddressR(mem_intf.AddressR), 
-    .AddressS1(mem_intf.AddressS1), 
-    .AddressS2(mem_intf.AddressS2), 
-    .R(mem_intf.R), 
-    .S1(mem_intf.S1), 
-    .S2(mem_intf.S2), 
-    .completed(mem_intf.completed)
+    .clock(memoryInterface.clk), 
+    .start(memoryInterface.start), 
+    .BestDist(memoryInterface.bestDistance),  // Updated variable name
+    .motionX(memoryInterface.motionX), 
+    .motionY(memoryInterface.motionY), 
+    .AddressR(memoryInterface.AddressR), 
+    .AddressS1(memoryInterface.AddressS1), 
+    .AddressS2(memoryInterface.AddressS2), 
+    .R(memoryInterface.R), 
+    .S1(memoryInterface.S1), 
+    .S2(memoryInterface.S2), 
+    .completed(memoryInterface.completed)
   );
 
   // Bind statement to bind the assertions module to the top module
   bind dut MotionEstimationAssertions assertion_instance (
-    .clk(mem_intf.clk), 
-    .trigger(mem_intf.start), 
-    .distance(mem_intf.bestDistance),  // Updated variable name
-    .vectorX(mem_intf.motionX), 
-    .vectorY(mem_intf.motionY),  
-    .done(mem_intf.completed)
+    .clk(memoryInterface.clk), 
+    .trigger(memoryInterface.start), 
+    .distance(memoryInterface.bestDistance),  // Updated variable name
+    .vectorX(memoryInterface.motionX), 
+    .vectorY(memoryInterface.motionY),  
+    .done(memoryInterface.completed)
   );
 
 endmodule
