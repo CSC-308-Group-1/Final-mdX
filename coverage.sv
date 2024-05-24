@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-class CoverageAnalysis;
+class coverageanalysis;
 
   // Metric for tracking coverage
   real coverageScore;
