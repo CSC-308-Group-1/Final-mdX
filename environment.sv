@@ -23,19 +23,19 @@ class environment;
   event mon_done;
   
   // Virtual interface handle
-  virtual MotionEstimationInterface mem_intf;          
+  virtual MotionEstimationInterface memoryInterface;          
 
   // Constructor: Initializes the virtual interface and component instances
-  function new(virtual MotionEstimationInterface mem_intf);
-    this.mem_intf = mem_intf;   
+  function new(virtual MotionEstimationInterface memoryInterface);
+    this.memoryInterface = memoryInterface;   
     gen2driv = new();
     mon2scb = new();
     mon2cov = new();
     gen = new(gen2driv, gen_ended);
-    driv = new(mem_intf, gen2driv);
-    mon = new(mem_intf, mon2scb, mon2cov);
+    driv = new(memoryInterface, gen2driv);
+    mon = new(memoryInterface, mon2scb, mon2cov);
     scb = new(mon2scb);
-    cov = new(mem_intf, mon2cov);
+    cov = new(memoryInterface, mon2cov);
   endfunction
   
   // Pre-test task: Initializes default values
