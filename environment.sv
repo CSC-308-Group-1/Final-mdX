@@ -9,10 +9,10 @@
 
 class Environment;
   // Handles for Generator, Driver, Monitor, Scoreboard, and Coverage
-  Generator gen;                          
-  Driver driv;
-  Monitor mon;
-  Scoreboard scb;
+  generator gen;                          
+  driver driv;
+  monitor mon;
+  scoreboard scb;
   CoverageAnalysis cov;                 
   
   // Mailbox handles for communication between components
