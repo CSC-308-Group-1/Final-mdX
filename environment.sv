@@ -13,7 +13,7 @@ class environment;
   driver driv;
   monitor mon;
   scoreboard scb;
-  coverageanalysis cov;                 
+  CoverageAnalysis cov;                 
   
   // Mailbox handles for communication between components
   mailbox gen2driv, mon2scb, mon2cov;      
@@ -60,7 +60,7 @@ class environment;
     wait(gen_ended.triggered);
     wait(gen.trans_count == driv.no_transactions);
     wait(gen.trans_count == scb.no_transactions);
-    $display ("Coverage Report = %0.2f %% \n", cov.coverageMetric);  // Updated print statement
+    $display ("Coverage Report = %0.2f %% \n", cov.coverageScore);  // Updated print statement
     scb.summary();  // Print summary
   endtask 
   
