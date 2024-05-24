@@ -16,30 +16,30 @@ class environment;
   coverageanalysis cov;                 
   
   // Mailbox handles for communication between components
-  mailbox genToDriver, monitorToScoreboard, monitorToCoverage;      
+  mailbox gen2driv, mon2scb, mon2cov;      
   
   // Events for synchronization
-  event generatorDone;
-  event monitorDone;
+  event gen_ended;
+  event mon_done;
   
   // Virtual interface handle
-  virtual MemoryInterface memInterface;          
+  virtual ME_interface mem_intf;          
 
   // Constructor: Initializes the virtual interface and component instances
-  function new(virtual MemoryInterface memInterface);
-    this.memInterface = memInterface;   
-    genToDriver = new();
-    monitorToScoreboard = new();
-    monitorToCoverage = new();
-    gen = new(genToDriver, generatorDone);
-    driv = new(memInterface, genToDriver);
-    mon = new(memInterface, monitorToScoreboard, monitorToCoverage);
-    scb = new(monitorToScoreboard);
-    cov = new(memInterface, monitorToCoverage);
+  function new(virtual ME_interface mem_intf);
+    this.mem_intf = mem_intf;   
+    gen2driv = new();
+    mon2scb = new();
+    mon2cov = new();
+    gen = new(gen2driv, gen_ended);
+    driv = new(mem_intf, gen2driv);
+    mon = new(mem_intf, mon2scb, mon2cov);
+    scb = new(mon2scb);
+    cov = new(mem_intf, mon2cov);
   endfunction
   
   // Pre-test task: Initializes default values
-  task preTest();
+  task pre_test();
     $display("================================================= [ENV_INFO] Driver start ===============================================");
     driv.start();  // Initialize default values
   endtask
@@ -51,25 +51,25 @@ class environment;
       driv.main();
       mon.main();
       scb.main();
-      cov.trackCoverage();
+      cov.trackCoverage();  // Updated method call
     join_any
   endtask
   
   // Post-test task: Waits for completion and prints the coverage report
-  task postTest();
-    wait(generatorDone.triggered);
+  task post_test();
+    wait(gen_ended.triggered);
     wait(gen.trans_count == driv.no_transactions);
     wait(gen.trans_count == scb.no_transactions);
-    $display (" Coverage Report = %0.2f %% \n", cov.coverageMetric);  // Print coverage report
+    $display ("Coverage Report = %0.2f %% \n", cov.coverageMetric);  // Updated print statement
     scb.summary();  // Print summary
   endtask 
   
   // Run task: Executes the complete test sequence
   task run;
-    preTest();
+    pre_test();
     $display("================================================= [ENV_INFO] Done with pre-test, Test Started. =================================================");
     test();
-    postTest();
+    post_test();
     $finish;
   endtask
   
