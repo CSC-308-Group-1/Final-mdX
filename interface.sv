@@ -9,30 +9,30 @@ interface ME_interface(input bit clk);
   bit start; 
   logic [3:0] motionX;
   logic [3:0] motionY;
-  integer Expected_motionX;
-  integer Expected_motionY;
+  integer expectedXMotion;
+  integer expectedYMotion;
   logic [7:0] AddressR;
   logic [9:0] AddressS1;
   logic [9:0] AddressS2;
   logic [7:0] R;
   logic [7:0] S1;
   logic [7:0] S2;
-  logic [7:0] BestDist;
+  logic [7:0] bestDistance;
   logic completed;
-  logic [7:0] R_mem[`RMEM_MAX-1:0];
-  logic [7:0] S_mem[`SMEM_MAX-1:0];
+  logic [7:0] referenceMemory[`RMEM_MAX-1:0];
+  logic [7:0] searchMemory[`SMEM_MAX-1:0];
 
   // Clocking block for driver
   clocking ME_driver_cb @(posedge clk);
     default input #1 output #1;
-    output R_mem;
-    output S_mem;
+    output referenceMemory;
+    output searchMemory;
     output R;
     output S1;
     output S2;
-    output Expected_motionX;
-    output Expected_motionY;
-    input BestDist;
+    output expectedXMotion;
+    output expectedYMotion;
+    input bestDistance;
     input motionX, motionY;
     input AddressR;
     input AddressS1;
@@ -43,19 +43,19 @@ interface ME_interface(input bit clk);
   // Clocking block for monitor
   clocking ME_monitor_cb @(posedge clk);
     default input #1 output #1;
-    input R_mem;
-    input S_mem;
+    input referenceMemory;
+    input searchMemory;
     input R;
     input S1;
     input S2;
-    input Expected_motionX;
-    input Expected_motionY;
+    input expectedXMotion;
+    input expectedYMotion;
     input motionX, motionY;
     input AddressR;
     input AddressS1;
     input AddressS2;
     input completed;
-    input BestDist;
+    input bestDistance;
   endclocking
   
   // Modport for driver
