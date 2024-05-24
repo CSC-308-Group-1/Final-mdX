@@ -44,10 +44,10 @@ class driver;
       @(posedge memoryInterface.DriverInterface.clk);
       `DRIV_IF.expectedXMotion <= trans.expectedXMotion;  // Drive Expected X Motion to interface
       `DRIV_IF.expectedYMotion <= trans.expectedYMotion;  // Drive Expected Y Motion to interface
-      $display("% [DRIVER_INFO]     :: Driver Packet Expected X Motion: %0d and Expected Y Motion: %0d %", trans.expectedXMotion, trans.expectedYMotion);
+      $display("%% [DRIVER_INFO]     :: Driver Packet Expected X Motion: %0d and Expected Y Motion: %0d %%", trans.expectedXMotion, trans.expectedYMotion);
       wait(memoryInterface.completed == 1);  // Wait for DUT to signal completion
       memoryInterface.start = 0;
-      $display("% [DRIVER_INFO]     :: DUT sent completed = 1 %");
+      $display("%% [DRIVER_INFO]     :: DUT sent completed = 1 %%");
       no_transactions++;
       @(posedge memoryInterface.DriverInterface.clk);
     end
