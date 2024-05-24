@@ -22,7 +22,7 @@ class scoreboard;
     partial = 0;
     perfect = 0;
     nomatch = 0;
-    $display("================================================= [SCOREBOARD_INFO] :: Main Task Starts =================================================");
+    $display("**************************************** [SCOREBOARD_INFO] :: Main Task Starts ****************************************");
     forever begin
       mon2scb.get(trans); // Get transaction from monitor
       $display("[SCOREBOARD_INFO] :: expectedXMotion : %d, expectedYMotion : %d", trans.expectedXMotion, trans.expectedYMotion);
@@ -38,7 +38,7 @@ class scoreboard;
       else
         motionY = trans.actualYMotion;
 
-      $display("\n================================================= [SCOREBOARD_RESULTS] =================================================");
+      $display("\n****************************************[SCOREBOARD_RESULTS] ****************************************");
 
       // Evaluate the transaction based on bestDistance value
       if (trans.bestDistance == 8'hFF) begin
@@ -69,23 +69,23 @@ class scoreboard;
                   motionX, motionY, trans.expectedXMotion, trans.expectedYMotion);
       end
 
-      $display("========================================================================================================================\n");  
+      $display****************************************n");  
       no_transactions++;
       $display("[SCOREBOARD_INFO] :: Number of Transaction Packets: %d", no_transactions);
-      $display("------------------------------------------------------------------------------------------------------------------------\n");
+      $display("****************************************\n");
     end
   endtask
 
-  // Summary function: Displays a summary of the test results
+ // Summary function: Displays a summary of the test results
   function void summary();
-    $display("-----------------------------------------");
-    $display("| Test Results                          |");
-    $display("-----------------------------------------");
-    $display("| Total Packets          | %6d       |", no_transactions);
-    $display("| Perfect Matches        | %6d       |", perfect);
-    $display("| Partial Matches        | %6d       |", partial);
-    $display("| No Matches             | %6d       |", nomatch);
-    $display("-----------------------------------------");
+    $display("*****************************************");
+    $display("|              Test Results              |");
+    $display("*****************************************");
+    $display("| Total Packets        | %6d            |", no_transactions);
+    $display("| Perfect Matches      | %6d            |", perfect);
+    $display("| Partial Matches      | %6d            |", partial);
+    $display("| No Matches           | %6d            |", nomatch);
+    $display("*****************************************");
   endfunction
-  
+
 endclass
