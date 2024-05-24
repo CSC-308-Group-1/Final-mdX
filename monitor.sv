@@ -44,7 +44,7 @@ class monitor;
       if (trans.actualYMotion >= 8)
         trans.actualYMotion = trans.actualYMotion - 16;
         
-      $display("%[MONITOR_INFO]    :: DUT OUTPUT Packet motionX: %0d and motionY: %0d%", trans.actualXMotion, trans.actualYMotion);
+      $display("%% [MONITOR_INFO]    :: DUT OUTPUT Packet motionX: %0d and motionY: %0d %%", trans.actualXMotion, trans.actualYMotion);
 
       // Copy transaction data for coverage
       cov_trans = new trans; 
