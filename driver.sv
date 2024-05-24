@@ -41,7 +41,7 @@ class driver;
       mem_intf.referenceMemory = trans.referenceMemory;  // Drive referenceMemory to interface
       mem_intf.searchMemory = trans.searchMemory;  // Drive searchMemory to interface
       mem_intf.start = 1; 
-      @(posedge mem_intf.ME_DRIVER.clk);
+      @(posedge mem_intf.DriverInterface.clk);
       `DRIV_IF.expectedXMotion <= trans.expectedXMotion;  // Drive Expected X Motion to interface
       `DRIV_IF.expectedYMotion <= trans.expectedYMotion;  // Drive Expected Y Motion to interface
       $display("[DRIVER_INFO]     :: Driver Packet Expected X Motion: %d and Expected Y Motion: %d", trans.expectedXMotion, trans.expectedYMotion);       
@@ -49,7 +49,7 @@ class driver;
       mem_intf.start = 0;
       $display("[DRIVER_INFO]     :: DUT sent completed = 1 ");
       no_transactions++;
-      @(posedge mem_intf.ME_DRIVER.clk);
+      @(posedge mem_intf.DriverInterface.clk);
     end
   endtask
 
