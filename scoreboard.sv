@@ -69,7 +69,7 @@ class scoreboard;
                   motionX, motionY, trans.expectedXMotion, trans.expectedYMotion);
       end
 
-      $display****************************************n");  
+      $display("****************************************n");  
       no_transactions++;
       $display("[SCOREBOARD_INFO] :: Number of Transaction Packets: %d", no_transactions);
       $display("****************************************\n");
