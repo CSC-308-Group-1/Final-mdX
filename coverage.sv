@@ -1,71 +1,75 @@
 `timescale 1ns/1ps
 
-class coverage;
+class CoverageAnalysis;
 
-  // Coverage metric
-  real ME_Coverage;
+  // Metric for tracking coverage
+  real coverageScore;
 
-  // Virtual interface to memory
-  virtual ME_interface mem_intf;
+  // Virtual interface for memory operations
+  virtual MemoryInterface memInterface;
 
-  // Mailbox for receiving transactions from the monitor
-  mailbox mon2cov;
+  // Mailbox for receiving data from the monitor
+  mailbox monitorMailbox;
 
-  // Transaction object
-  Transaction trans;
+  // Object for transactions
+  Transaction transactionData;
       
-  // Covergroup for measuring coverage
-  covergroup ME_covergroup;
+  // Covergroup for tracking different coverage metrics
+  covergroup CoverageMetrics;
     option.per_instance = 1;
     
-    // Coverpoint for BestDist
-    Best_dist: coverpoint trans.BestDist; // Automatic bins
+    // Coverpoint for distance metric
+    cpBestDistance: coverpoint transactionData.bestDistance;
 
-    // Coverpoint for Expected_motionX with specified bins
-    Expect_motionX: coverpoint trans.Expected_motionX {
-      bins neg_val[] = {[-8:-1]}; // Negative values
-      bins zero_val  = {0};       // Zero value
-      bins pos_val[] = {[1:7]};   // Positive values
+    // Coverpoint for expected X motion values
+    cpExpectedX: coverpoint transactionData.expectedMotionX {
+      bins negativeRange[] = {[-8:-1]};
+      bins zeroValue  = {0};
+      bins positiveRange[] = {[1:7]};
     }
 
-    // Coverpoint for Expected_motionY with specified bins
-    Expect_motionY: coverpoint trans.Expected_motionY {
-      bins neg_val[] = {[-8:-1]}; // Negative values
-      bins zero_val  = {0};       // Zero value
-      bins pos_val[] = {[1:7]};   // Positive values
+    // Coverpoint for expected Y motion values
+    cpExpectedY: coverpoint transactionData.expectedMotionY {
+      bins negativeRange[] = {[-8:-1]};
+      bins zeroValue  = {0};
+      bins positiveRange[] = {[1:7]};
     }
 
-    // Coverpoint for Actual_motionX with specified bins
-    Actual_motionX: coverpoint trans.motionX {
-      bins neg_val[] = {[-8:-1]}; // Negative values
-      bins zero_val  = {0};       // Zero value
-      bins pos_val[] = {[1:7]};   // Positive values
+    // Coverpoint for actual X motion values
+    cpActualX: coverpoint transactionData.motionX {
+      bins negativeRange[] = {[-8:-1]};
+      bins zeroValue  = {0};
+      bins positiveRange[] = {[1:7]};
     }
 
-    // Coverpoint for Actual_motionY with specified bins
-    Actual_motionY: coverpoint trans.motionY {
-      bins neg_val[] = {[-8:-1]}; // Negative values
-      bins zero_val  = {0};       // Zero value
-      bins pos_val[] = {[1:7]};   // Positive values
+    // Coverpoint for actual Y motion values
+    cpActualY: coverpoint transactionData.motionY {
+      bins negativeRange[] = {[-8:-1]};
+      bins zeroValue  = {0};
+      bins positiveRange[] = {[1:7]};
     }
-    Cross_Exp : cross Expect_motionX,Expect_motionY;
-    Cross_Act : cross Actual_motionX,Actual_motionY;
+    
+    // Cross coverage for expected motion
+    crossExpected: cross cpExpectedX, cpExpectedY;
+    
+    // Cross coverage for actual motion
+    crossActual: cross cpActualX, cpActualY;
   endgroup
   
-  // Constructor to initialize the coverage class
-  function new(virtual ME_interface mem_intf, mailbox mon2cov);
-    this.mem_intf = mem_intf;
-    this.mon2cov = mon2cov;
-    ME_covergroup = new();
+  // Constructor to initialize the coverage analysis
+  function new(virtual MemoryInterface memInterface, mailbox monitorMailbox);
+    this.memInterface = memInterface;
+    this.monitorMailbox = monitorMailbox;
+    CoverageMetrics = new();
   endfunction
    
-  // Task to continuously sample coverage
-  task cove();
+  // Task to sample and update coverage metrics
+  task trackCoverage();
     begin
       forever begin
-        mon2cov.get(trans);        // Get a transaction from the mailbox
-        ME_covergroup.sample();    // Sample the covergroup
-        ME_Coverage = ME_covergroup.get_coverage(); // Update coverage metric
+        monitorMailbox.get(transactionData);        // Receive a transaction
+        CoverageMetrics.sample();                   // Sample the covergroup
+        coverageScore = CoverageMetrics.get_coverage(); // Update the coverage metric
       end
     end
   endtask
