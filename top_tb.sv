@@ -16,7 +16,7 @@ module top_tb();
     mem_intf.start = 1'b1;
   end
   
-  ME_interface mem_intf(clk);  // Interface Instantiation
+  MotionEstimationInterface mem_intf(clk);  // Interface Instantiation
   ROM_R memR_u(.clock(clk), .AddressR(mem_intf.AddressR), .R(mem_intf.R));
   ROM_S memS_u(.clock(clk), .AddressS1(mem_intf.AddressS1), .AddressS2(mem_intf.AddressS2), .S1(mem_intf.S1), .S2(mem_intf.S2));
   
