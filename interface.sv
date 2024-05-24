@@ -23,7 +23,7 @@ interface MotionEstimationInterface(input bit clk);
   logic [7:0] searchMemory[`SMEM_MAX-1:0];
 
   // Clocking block for driver
-  clocking ME_driver_cb @(posedge clk);
+  clocking Driver_cb @(posedge clk);
     default input #1 output #1;
     output referenceMemory;
     output searchMemory;
@@ -59,7 +59,7 @@ interface MotionEstimationInterface(input bit clk);
   endclocking
   
   // Modport for driver
-  modport ME_DRIVER (clocking ME_driver_cb, input clk, start);
+  modport DriverInterface (clocking Driver_cb, input clk, start);
   
   // Modport for monitor
   modport ME_MONITOR (clocking ME_monitor_cb, input clk, start);
