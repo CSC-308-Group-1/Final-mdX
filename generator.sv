@@ -22,10 +22,13 @@ class generator;
 
   // Main task: Generates transactions and sends them to the driver
   task main();
-    $display("**************************************** [GEN_INFO]: Generator Main Task****************************************");
+  $display("*---------*----------*----------*----------*----------*----------*----------*----------*------*");
+    $display("*---------*----------* ENGR 850: DIGITAL DESIGN VERIFICATION FINAL PROJECT *----------*----------*");
+    $display("*---------*----------*----------*----------*----------*----------*----------*----------*------*");
+    $display("*---------*----------*--------* GENERATOR MODULE -BEGINS *--------*--------*-------*----------*");
     repeat (trans_count) begin
       trans = new();
-      if (!trans.randomize()) $fatal("[GEN_ERROR] :: Randomization failed"); // Randomize Transaction class
+      if (!trans.randomize()) $fatal("Randomization failed"); // Randomize Transaction class
       trans.generateReferenceMemory(); // Generate referenceMemory from searchMemory
       trans.display();
       gen2driv.put(trans); // Put transaction packet into mailbox
