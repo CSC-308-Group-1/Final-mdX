@@ -21,7 +21,7 @@ class monitor;
   
   // Main monitoring task: Observes DUT activity, captures transactions, and communicates with scoreboard and coverage
   task main;
-    $display("**************************************** Monitor Main Task ****************************************\n");
+    $display("*---------*----------*--------* MONITOR MODULE -BEGINS *--------*--------*-------*----------*\n");
     forever begin
       Transaction trans, cov_trans;
       trans = new();
@@ -33,7 +33,7 @@ class monitor;
       trans.expectedXMotion = `MON_IF.expectedXMotion;
       trans.expectedYMotion = `MON_IF.expectedYMotion;
       wait(`MON_IF.completed); // Wait for completion signal from DUT
-      $display("[MONITOR_INFO]    :: COMPLETED");
+      $display("Complete");
       trans.bestDistance = `MON_IF.bestDistance;
       trans.actualXMotion = `MON_IF.motionX;
       trans.actualYMotion = `MON_IF.motionY;
@@ -44,7 +44,7 @@ class monitor;
       if (trans.actualYMotion >= 8)
         trans.actualYMotion = trans.actualYMotion - 16;
         
-      $display("[MONITOR_INFO]    :: DUT OUTPUT Packet motionX: %d and motionY: %d", trans.actualXMotion, trans.actualYMotion);
+      $display("DUT OUTPUT Packet motionX: %d and motionY: %d", trans.actualXMotion, trans.actualYMotion);
 
       // Copy transaction data for coverage
       cov_trans = new trans; 
