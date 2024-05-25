@@ -48,7 +48,7 @@ class Transaction;
       if (j == 255) $display("  ");
     end
 
-    $display("\n rand_index : %0d"", randomMismatchIndex);     
+    $display("\n rand_index : %0d", randomMismatchIndex);     
     $display("Expected_motionX : %0d", expectedXMotion);
     $display("Expected_motionY: %0d", expectedYMotion);
   endfunction
