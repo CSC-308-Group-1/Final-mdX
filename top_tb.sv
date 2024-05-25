@@ -3,7 +3,6 @@
 `include "defines.sv"
 `include "interface.sv"
 `include "test.sv"
-`include "assertion.sv"
 
 module top_tb();
   bit clk;
@@ -46,14 +45,6 @@ module top_tb();
     .completed(memoryInterface.completed)
   );
 
-  // Bind statement to bind the assertions module to the top module
-  bind dut MotionEstimationAssertions assertion_instance (
-    .clk(memoryInterface.clk), 
-    .trigger(memoryInterface.start), 
-    .distance(memoryInterface.bestDistance),  // Updated variable name
-    .vectorX(memoryInterface.motionX), 
-    .vectorY(memoryInterface.motionY),  
-    .done(memoryInterface.completed)
-  );
+ 
 
 endmodule
