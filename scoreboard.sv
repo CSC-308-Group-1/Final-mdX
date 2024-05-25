@@ -22,10 +22,10 @@ class scoreboard;
     partial = 0;
     perfect = 0;
     nomatch = 0;
-    $display("**************************************** [SCOREBOARD_INFO] :: Main Task Starts ****************************************");
+    $display("*---------*----------*--------* SCOREBOARD MODULE -BEGINS *--------*--------*-------*----------*");
     forever begin
       mon2scb.get(trans); // Get transaction from monitor
-      $display("[SCOREBOARD_INFO] :: expectedXMotion : %d, expectedYMotion : %d", trans.expectedXMotion, trans.expectedYMotion);
+      $display("Expected_motionX : %d, Expected_motionY : %d", trans.expectedXMotion, trans.expectedYMotion);
       
       // Adjust motionX and motionY for signed values
       if (trans.actualXMotion >= 8)
@@ -38,22 +38,22 @@ class scoreboard;
       else
         motionY = trans.actualYMotion;
 
-      $display("\n****************************************[SCOREBOARD_RESULTS] ****************************************");
+      $display("\n*---------*----------*--------*--------* RESULTS *--------*--------*-------*----------*--------*");
 
       // Evaluate the transaction based on bestDistance value
       if (trans.bestDistance == 8'hFF) begin
-        $display("[SCOREBOARD_INFO] :: Reference Memory Not Found in the Search Window!");
+        $display("Reference Memory Not Found in the Search Window!");
         nomatch++;
       end
       else begin
         if (trans.bestDistance == 8'h00) begin
-          $display("[SCOREBOARD_INFO] :: Perfect Match Found for Reference Memory in the Search Window"); 
-          $display("[SCOREBOARD_INFO] :: bestDistance = %0d, motionX = %0d, motionY = %0d, expectedXMotion = %0d, expectedYMotion = %0d", 
+          $display("Perfect Match Found for Reference Memory in the Search Window"); 
+          $display(" bestDistance = %0d, motionX = %0d, motionY = %0d, expectedXMotion = %0d, expectedYMotion = %0d", 
                     trans.bestDistance, motionX, motionY, trans.expectedXMotion, trans.expectedYMotion);
           perfect++;
         end
         else begin
-          $display("[SCOREBOARD_INFO] :: Partial Match Found: bestDistance = %0d, motionX = %0d, motionY = %0d, expectedXMotion = %0d, expectedYMotion = %0d", 
+          $display(" Partial Match Found: bestDistance = %0d, motionX = %0d, motionY = %0d, expectedXMotion = %0d, expectedYMotion = %0d", 
                     trans.bestDistance, motionX, motionY, trans.expectedXMotion, trans.expectedYMotion);
           partial++;
         end
@@ -61,17 +61,17 @@ class scoreboard;
 
       // Compare DUT motion values with expected values
       if (motionX == trans.expectedXMotion && motionY == trans.expectedYMotion) begin
-        $display("[SCOREBOARD_INFO] :: Motion As Expected :: DUT motionX = %0d, DUT motionY = %0d, expectedXMotion = %0d, expectedYMotion = %0d", 
+        $display("Motion As Expected :: DUT motionX = %0d, DUT motionY = %0d, expectedXMotion = %0d, expectedYMotion = %0d", 
                   motionX, motionY, trans.expectedXMotion, trans.expectedYMotion);
       end
       else begin
-        $display("[SCOREBOARD_INFO] :: Motion Not As Expected :: DUT motionX = %0d, DUT motionY = %0d, expectedXMotion = %0d, expectedYMotion = %0d", 
+        $display("Motion Not As Expected :: DUT motionX = %0d, DUT motionY = %0d, expectedXMotion = %0d, expectedYMotion = %0d", 
                   motionX, motionY, trans.expectedXMotion, trans.expectedYMotion);
       end
 
       $display("****************************************n");  
       no_transactions++;
-      $display("[SCOREBOARD_INFO] :: Number of Transaction Packets: %d", no_transactions);
+      $display("Number of Transaction Packets: %d", no_transactions);
       $display("****************************************\n");
     end
   endtask
