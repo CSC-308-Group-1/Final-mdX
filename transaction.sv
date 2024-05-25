@@ -34,23 +34,23 @@ class Transaction;
 
   // Display function to output transaction details
   function void display();
-    $display(" ================================================= [TRANSACTION_INFO] :: Search Memory Generated =================================================");
+    $display("*---------*----------*--------* SEARCH MEMORY *--------*--------*-------*----------*----------*");
     for (int j = 0; j < `SMEM_MAX; j++) begin
       if (j % 32 == 0) $display("  ");
       $write("%h  ", searchMemory[j]);
       if (j == 1023) $display("  ");
     end
 
-    $display(" ================================================= [TRANSACTION_INFO] :: Reference Memory Generated =================================================");
+    $display("*---------*----------*--------* REFERENCE MEMORY *--------*--------*-------*---------*-------*");
     for (int j = 0; j < `RMEM_MAX; j++) begin
       if (j % 16 == 0) $display("  ");
       $write("%h ", referenceMemory[j]);
       if (j == 255) $display("  ");
     end
 
-    $display("\n[TRANSACTION_INFO] :: Random Mismatch Index : %0d", randomMismatchIndex);     
-    $display("[TRANSACTION_INFO] :: Expected X Motion : %0d", expectedXMotion);
-    $display("[TRANSACTION_INFO] :: Expected Y Motion : %0d", expectedYMotion);
+    $display("\n rand_index : %0d"", randomMismatchIndex);     
+    $display("Expected_motionX : %0d", expectedXMotion);
+    $display("Expected_motionY: %0d", expectedYMotion);
   endfunction
 
   // Function to generate reference memory based on search memory and motion vectors
