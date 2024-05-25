@@ -38,6 +38,12 @@ class environment;
     cov = new(memoryInterface, mon2cov);
   endfunction
   
+  // Pre-test task: Initializes default values
+  task pre_test();
+    $display("****************************************  Driver start ****************************************");
+    driv.start();  // Initialize default values
+  endtask
+  
   // Test task: Executes the main tasks of all components
   task test();
     fork
@@ -61,7 +67,7 @@ class environment;
   // Run task: Executes the complete test sequence
   task run;
     pre_test();
-    $display("****************************************  Test Started. ****************************************");
+    $display("**************************************** Done with pre-test, Test Started. ****************************************");
     test();
     post_test();
     $finish;
